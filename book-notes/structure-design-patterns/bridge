@@ -1,0 +1,63 @@
+"""Pseudocode for bridge pattern.
+"""
+
+// The "abstraction" defines the interface for the "control"
+// part of the two class hierarchies. It maintains a reference
+// to an object of the "implementation" hierarchy and delegates
+// all of the real work to this object.
+
+class RemoteControl is
+    protected field device: Device
+    constructor RemoteControl(device: Device) is
+        this.device = device
+    method togglePower() is
+        if (devide.isEnable()) then
+            devide.disable()
+        else
+            device.enable()
+    method volumeDown() is
+        device.setVolume(device.getVolume() - 10)
+    method volumeUp() is
+        device.setVolume(device.getVolume() + 10)
+    method channelDown() is
+        device.setChannel(device.getChannel() - 1)
+    method channelUp() is
+        device.setChannel(device.getChannel() + 1)
+
+// You can extend classes from the abstraction hierarchy
+// independently from device classes.
+
+class AdvancedRemoteControl extends RemoteControl is
+    method mute() is
+        devide.setVolume(0)
+
+// The "implementation" interface declares methods common to all
+// concrete implementation classes. It doesn't have to match the172
+// abstraction's interface. In fact, the two interfaces can be
+// entirely different. Typically the implementation interface
+// provides only primitive operations, while the abstraction
+// defines higher-level operations based on those primitives.
+interface Devide is
+    method isEnable()
+    method disable()
+    method enable()
+    method getVolume()
+    method setVolume(percent)
+    method getChannel()
+    method setChannel(channel)
+
+// All device follow the same interface.
+class Tv implements Device is
+    // Do smt useful here ...
+
+class Radio implements Device is
+    // Do smt useful here ...
+
+// Somewere in client code.
+tv = new Tv()
+remote = new RemoteControl(tv)
+remote.togglePower()
+
+radio = new Radio()
+remote = new AdvancedRemoteControl(radio)
+
