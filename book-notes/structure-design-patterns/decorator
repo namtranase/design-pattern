@@ -71,12 +71,46 @@ class CompressionDecorator extends DataSourceDecorator is
 
 // Option 1. A simple example of a decorator assembly.
 class Application is
-    // Updating ...
+    method dumbUsageExample() is
+        source = new FileDataSource("example.txt")
+        source.writeData(salaryRecords)
+        // The target file has been written with plain data.
+
+        source = new CompressionDecorator(source)
+        source.writeData(salaryRecords)
+        // The target file has been written with compressed data.
+
+        source = new EncryptionDecorator(source)
+        // The source variable now contains this:
+        // Encryption > Compression > FileDataSource
+        source.writeData(salaryRecords)
+        // The target file has been writteb with encrypted data.
+// Option 2. Client code that uses an external data source.
+// SalaryManager objects neither know nor care about data
+// storage specifics. They work with a pre-configured data
+// source received from the app configurato
 
 class SalaryManager is
-    // Updating ...
+    field source: DataSource
+
+    constructor SalaryManager(source: DataSource) {...}
+
+    method load() is
+        return source.readData()
+
+    method save() is
+        source.writeData(salaryRecords)
+    // Other useful methods
 
 class ApplicationConfigurator is
-    // Updating ...
+    method configurationExample() is
+        source = new FileDataSource("example.txt")
+        if (enableEncryption)
+            source = new EncryptionDecorator(source)
+        if (enableCompression)
+            source = new CompressionDecorator(source)
+
+        logger = new SalaryManager(source)
+        salary = logger.load()
 
 
